@@ -1,0 +1,28 @@
+# This is a basic workflow to help you get started with Actions
+name: BuildandDeployStage
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches:
+      - 'stage'
+
+concurrency:
+  group: ${{ github.repository }}
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  buildPublish:
+    uses: cloudstaff-apps/github-actions/.github/workflows/buildPublish.yml@main
+    secrets: inherit
+    with:
+      ecsServiceName: wpqa
+
+  ecsDeploy:
+    needs:
+      - buildPublish
+    uses: cloudstaff-apps/github-actions/.github/workflows/ecsDeploy.yml@main
+    secrets: inherit
+    with:
+      environment: stage
+      ecsServiceName: wpqa

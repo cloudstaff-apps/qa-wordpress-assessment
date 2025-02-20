@@ -1,1 +1,1 @@
-# qa-wordpress-assessment
+# QA Wordpress Assessment
